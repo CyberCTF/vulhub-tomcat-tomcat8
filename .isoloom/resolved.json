@@ -1,0 +1,152 @@
+{
+  "generated_by_isoloom": "from isoloom.yml; don't edit: change the spec and run `isoloom generate` (`isoloom check` fails when this file is out of date)",
+  "resolved_version": 1,
+  "name": "vulhub-tomcat-tomcat8",
+  "instance": null,
+  "inputs": [],
+  "networks": {
+    "lab": {
+      "cidr": "10.61.8.0/24",
+      "docker_cidr": "10.61.8.0/24",
+      "internet": false,
+      "gateway": null,
+      "gateway_address": "10.61.8.1",
+      "router": null,
+      "controller": "10.61.8.253"
+    }
+  },
+  "reach": [],
+  "machines": {
+    "tomcat": {
+      "access": false,
+      "supplied": false,
+      "shapes": [
+        "docker"
+      ],
+      "arch": "amd64",
+      "os": null,
+      "windows": false,
+      "addresses": {
+        "lab": "10.61.8.10"
+      },
+      "docker_addresses": {
+        "lab": "10.61.8.10"
+      },
+      "services": [
+        {
+          "port": 8080,
+          "name": "web",
+          "http": true,
+          "publish": 8080
+        }
+      ],
+      "depends_on": [],
+      "inputs": [],
+      "volumes": {},
+      "resources": {
+        "cpus": 1,
+        "memory_mb": 512,
+        "disk_gb": 20
+      },
+      "gateway_of": [],
+      "routes": [],
+      "default_gateway": null,
+      "offline": true
+    }
+  },
+  "start_order": [
+    "tomcat"
+  ],
+  "clones": {},
+  "tools": {},
+  "groups": {},
+  "router": null,
+  "controller": {
+    "addresses": {
+      "lab": "10.61.8.253"
+    }
+  },
+  "published": [
+    {
+      "machine": "tomcat",
+      "port": 8080,
+      "host_port": 8080
+    }
+  ],
+  "targets": {
+    "possible": [
+      "docker",
+      "hosted",
+      "docker-vm",
+      "cloud-docker",
+      "kubernetes"
+    ],
+    "generated": [
+      "docker",
+      "hosted",
+      "docker-vm",
+      "cloud-docker",
+      "kubernetes"
+    ],
+    "refused": {},
+    "not_possible": {
+      "hybrid": "only when some machines are containers and others are VMs",
+      "vagrant": "needs `vm:` on tomcat",
+      "proxmox": "needs `vm:` on tomcat",
+      "cloud-vm": "needs `vm:` on tomcat",
+      "external": "needs `external:` on tomcat"
+    }
+  },
+  "checks": {
+    "default_position": "networks",
+    "positions": [
+      {
+        "position": "networks",
+        "machine": null,
+        "runner": "isoloom-check",
+        "checks": [
+          {
+            "name": "Tomcat answers",
+            "derived": false,
+            "kind": "http",
+            "target": "http://tomcat:8080/",
+            "expect": "200",
+            "wait": 120
+          },
+          {
+            "name": "the Manager asks for a password",
+            "derived": false,
+            "kind": "http",
+            "target": "http://tomcat:8080/manager/html",
+            "expect": "401",
+            "wait": 30
+          },
+          {
+            "name": "the server is Tomcat 8.0",
+            "derived": false,
+            "kind": "script",
+            "target": "checks/version.sh",
+            "expect": "",
+            "wait": 30
+          }
+        ]
+      },
+      {
+        "position": "tomcat",
+        "machine": "tomcat",
+        "runner": "isoloom-check-tomcat",
+        "checks": [
+          {
+            "name": "no internet from tomcat",
+            "derived": true,
+            "kind": "http",
+            "target": "http://1.1.1.1/",
+            "expect": "blocked",
+            "wait": 0
+          }
+        ]
+      }
+    ]
+  },
+  "message": "Tomcat 8.0 answers at http://localhost:8080/. The Manager is at /manager/html.\nWhoever set it up did not pick a strong password.\n"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Tomcat 8 Manager Weak Password and WAR Upload",
+  "description": "Apache Tomcat 8.0 with the Manager application open to remote addresses and an account with a weak password: guessing the credentials gives access to /manager/html, where uploading a WAR file deploys a JSP shell.",
+  "question": "Get into the Tomcat Manager, deploy a WAR file and get a shell on the server.",
+  "category": "WEB",
+  "difficulty": 1,
+  "evidence_kind": "SECRET",
+  "capabilities": [
+    "weak-credentials",
+    "password-guessing",
+    "war-deployment",
+    "remote-code-execution",
+    "tomcat"
+  ]
+}

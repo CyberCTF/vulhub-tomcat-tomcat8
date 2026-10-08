@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
+# Tomcat 8 Manager weak password (Vulhub, by phith0n and the Vulhub contributors) as an Isoloom spec:
+# Vulhub's tomcat/tomcat8, vendored in build/tomcat/app/: the published image
+# vulhub/tomcat:8.0 with Vulhub's user and context files copied in (build/tomcat/).
+# `isoloom generate`, then `isoloom run docker`.
+version: 1
+name: vulhub-tomcat-tomcat8
+
+networks:
+  lab: { cidr: 10.61.8.0/24, internet: false }
+
+machines:
+  tomcat:
+    networks: { lab: 10 }
+    services: [{ port: 8080, name: web, http: true, publish: 8080 }]
+    resources: { cpus: 1, memory_mb: 512 }
+    docker:
+      build: build/tomcat
+
+checks:
+  - name: Tomcat answers
+    http: http://tomcat:8080/
+    wait: 120
+  - name: the Manager asks for a password
+    http: http://tomcat:8080/manager/html
+    expect: 401
+    wait: 30
+  - name: the server is Tomcat 8.0
+    script: checks/version.sh
+    wait: 30
+
+message: |
+  Tomcat 8.0 answers at http://localhost:{{ machines.tomcat.services.0.publish }}/. The Manager is at /manager/html.
+  Whoever set it up did not pick a strong password.
