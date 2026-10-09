@@ -94,7 +94,8 @@
       "vagrant": "needs `vm:` on tomcat",
       "proxmox": "needs `vm:` on tomcat",
       "cloud-vm": "needs `vm:` on tomcat",
-      "external": "needs `external:` on tomcat"
+      "external": "needs `external:` on tomcat",
+      "cloud-services": "left out by `targets:`"
     }
   },
   "checks": {
