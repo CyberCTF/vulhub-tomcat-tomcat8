@@ -4,12 +4,5 @@
   "question": "Get into the Tomcat Manager, deploy a WAR file and get a shell on the server.",
   "category": "WEB",
   "difficulty": 1,
-  "evidence_kind": "SECRET",
-  "capabilities": [
-    "weak-credentials",
-    "password-guessing",
-    "war-deployment",
-    "remote-code-execution",
-    "tomcat"
-  ]
+  "evidence_kind": "SECRET"
 }
