@@ -1,0 +1,66 @@
+{
+  "objectives": [
+    {
+      "key": "main",
+      "title": "Read the flag",
+      "prompt": "Get into the Tomcat Manager, deploy an application of your own, run a command and read /ctf/flag.",
+      "check": {
+        "evidence": "SECRET",
+        "format": "FLAG{%s}"
+      },
+      "dev": "FLAG{dev-vulhub-tomcat-tomcat8}",
+      "hints": [
+        "The Manager is at /manager/html. Whoever set it up did not pick a strong password; Tomcat's default example credentials are a good start.",
+        "A deployed WAR runs as the server. The flag is at /ctf/flag."
+      ],
+      "steps": [
+        {
+          "key": "version",
+          "title": "Identify the server",
+          "prompt": "Which Tomcat major version answers? (major version)",
+          "check": {
+            "answer_regex": "^8(\\.0)?(\\.\\d+)?$"
+          }
+        },
+        {
+          "key": "app",
+          "title": "Find the entry point",
+          "prompt": "Which bundled Tomcat application deploys new applications? (name)",
+          "check": {
+            "answer": [
+              "manager",
+              "tomcat manager",
+              "manager app",
+              "/manager/html",
+              "manager/html"
+            ]
+          }
+        },
+        {
+          "key": "class",
+          "title": "Name the weakness",
+          "prompt": "Which weakness lets you log in? (two words)",
+          "check": {
+            "answer": [
+              "weak password",
+              "weak credentials",
+              "default credentials",
+              "default password",
+              "weak passwords"
+            ]
+          }
+        },
+        {
+          "key": "format",
+          "title": "Name the format",
+          "prompt": "In which archive format is a web application deployed? (acronym)",
+          "check": {
+            "answer": [
+              "war"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
